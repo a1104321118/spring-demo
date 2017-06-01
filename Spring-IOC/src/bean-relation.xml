@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+	<!-- 如果父bean的 abstract 属性为 true 的话， 那么父bean不能被实例化，只能被继承 -->
+	<!-- 如果一个bean没有class 属性的话，则一定为抽象bean -->
+	<bean id="address1"
+			p:city="BeiJing" p:street="UnknowStreet" abstract="true">
+	</bean>
+	
+	<!-- 使用bean 的 parent 属性继承配置 -->
+	<bean id="address2" class="spring.bean.autowire.Address"
+			 p:street="YueQing" parent="address1">
+	</bean>
+	
+	<bean id="car1" class="spring.bean.autowire.Car"
+		p:brand="Lanborgni" p:price="2000000">
+	</bean>
+	
+	<!-- person1 依赖于 car1 ,但是 person1 在实例化的时候并不会初始化 car1 的属性值，而是为null-->
+	<bean id="person1" class="spring.bean.autowire.Person"
+		p:name="HR" p:address-ref="address2" depends-on="car1">
+	</bean>
+
+
+
+</beans>

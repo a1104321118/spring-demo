@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+	<bean id="address" class="spring.bean.autowire.Address" 
+			p:city="BeiJing" p:street="UnknowStreet"></bean>
+	
+	<bean id="car" class="spring.bean.autowire.Car" p:brand="Audi" p:price="300000"></bean>
+	
+	<!-- 测试自动装配( byType 对应  @Autowired)  (byName 对应 @Resource) 
+	byName 属性，要求：bean的id 要和 javaBean的 属性名相同 (address 、 Car)
+	byType 类型能对上（配置两个相同的类型时出错（bean的id不同，类相同））
+	缺点：如果只想配置个别属性，所以就比较不灵活
+	
+	即： 
+	//自动装配person，byName：就是bean 的 id 和变量名相同，初始属性就和bean里面配置的属性相同
+	@Resource
+	public Person person; 
+	
+	//自动装配person，byType：就是 bean 的 Class 和变量类型相同 ，初始属性就和bean里面配置的属性相同
+	@Autowired
+	public spring.bean.autowire.Person person; 
+	-->
+	<bean id="person" class="spring.bean.autowire.Person" 
+			p:name="HR" autowire="byName"></bean>
+	
+	
+</beans>

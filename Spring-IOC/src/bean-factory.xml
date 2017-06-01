@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+	<!-- 静态工厂方法来创建 bean 实例 用factory-method来指定函数 -->
+	<bean id="car1" class="spring.bean.factory.StaticCarFactory" factory-method="getCar">
+		<constructor-arg value="Audi"></constructor-arg>
+	</bean>
+	
+	<!-- 动态方法：配置工厂实例 -->
+	<bean id="carFactory" class="spring.bean.factory.InstanceCarFactory"></bean>
+	
+	<!-- 主要是这个属性  factory-bean="carFactory"  -->
+	<bean id="car2" factory-bean="carFactory" factory-method="getCar">
+		<constructor-arg value="Audi"></constructor-arg>
+	</bean>
+	
+
+
+</beans>

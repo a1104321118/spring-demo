@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+	<!-- 配置bean(通过属性注入的方式) -->
+	<bean id="helloworld" class="spring.bean.HelloWorld">
+		<property name="name" value="Spring"></property><!--属性注入： name 对应setName方法 -->
+	</bean>
+	
+	<!-- 配置bean(通过构造器的方法) 可以指定参数的位置（index） 以及类型（type="java.lang.String"） -->
+	<bean id="car" class="spring.bean.Car">
+		<constructor-arg value="Audi" index="0"></constructor-arg>
+		<constructor-arg index="1"><!-- 如果包含特殊符号，使用这种方式进行注入 -->
+			<value><![CDATA[<ShangHai>]]></value>
+		</constructor-arg>
+		<constructor-arg value="100000" index="2"></constructor-arg>
+		<constructor-arg value="200" index="3"></constructor-arg>
+	</bean>
+
+	<bean id="person" class="spring.bean.Person">
+		<property name="name" value="Tom"></property>
+		<property name="age" value="24"></property>
+		<!-- 将Person 和 Car 相关联，引用外部Bean -->
+		<property name="car" ref="car"></property> 
+		<!-- 内部 Bean -->
+		<!-- 
+		<property name="car">
+			<bean class="spring.bean.Car">
+				<constructor-arg value="Audi" index="0"></constructor-arg>
+				<constructor-arg index="1">如果包含特殊符号，使用这种方式进行注入
+					<value><![CDATA[<ShangHai>]]></value>
+				</constructor-arg>
+				<constructor-arg value="100000" index="2"></constructor-arg>
+				<constructor-arg value="200" index="3"></constructor-arg>
+			</bean>
+		</property>
+		 -->
+	</bean>
+	
+	<!-- 配置集合属性(使用list结点为list属性的结点赋值) -->
+	<!-- 配置集合属性(把list换成 map 结点， 然后里面使用 entry 结点配置key、value属性) -->
+	<bean id="person2" class="spring.bean.collections.Person">
+		<property name="name" value="Tom"></property>
+		<property name="age" value="11"></property>
+		<property name="cars">
+			<list>
+				<ref bean="car"/>
+				<ref bean="car"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 配置properties属性值 -->
+	<bean id="datasource" class="spring.bean.collections.DataSource">
+		<property name="properties">
+			<props>
+				<prop key="username">root</prop>
+				<prop key="password">root</prop>
+				<prop key="driver">com.mysql.jdbc.Driver</prop>
+				<prop key="url">jdbc:mysql://127.0.0.1:3306/mytest</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- 配置独立的集合Bean，让别的Bean可以引用，需要打开util的命名空间 -->
+	<util:list id="cars">
+		<ref bean="car" />
+		<ref bean="car" />
+	</util:list>
+	
+	<!-- 引用上面定义的 cars 片段 -->
+	<bean id="person3" class="spring.bean.collections.Person">
+		<property name="name" value="Tom"></property>
+		<property name="age" value="11"></property>
+		<property name="cars" ref="cars"></property>
+	</bean>
+	
+	<!-- p命名空间的使用  需要打开p命名空间-->
+	<bean id="person4" class="spring.bean.collections.Person"
+			p:age="30" p:name="Jerry" p:cars-ref="cars">
+	</bean>
+</beans>
